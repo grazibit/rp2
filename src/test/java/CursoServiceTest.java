@@ -35,74 +35,140 @@ public class CursoServiceTest {
         assertEquals(descricao, novoCurso.getDescricao());
 
         assertEquals(StatusCurso.PENDENTE_APROVACAO, novoCurso.getStatus());
-        assertEquals(tamanhoLista + 1 , dataManager.getCursos().size());
+        assertEquals(tamanhoLista + 1, dataManager.getCursos().size());
     }
 
-    // REQUISITO: Editar cursos existentes (Professor/Admin)
     @Test
     void editarCursoDeveAtualizarTituloEDescricao() {
-        // TODO: Testar a edição de um curso existente (ex: "c1"):
-        // 1. Chamar editarCurso() e verificar se o retorno é 'true'.
-        // 2. Recuperar o curso na persistência (dataManager).
-        // 3. Verificar se o título e a descrição foram atualizados corretamente.
+        Curso cursoEditar = cursoService.criarCurso("Resolução Problemas", "materia que blablabla sla", "u3");
+
+        String cursoId = cursoEditar.getId();
+        String novoTitulo = "POO";
+        String novaDescricao = "Ai sla oq não sei oq la";
+
+        boolean editou = cursoService.editarCurso(cursoId, novoTitulo, novaDescricao);
+        assertTrue(editou);
+
+        Optional<Curso> cursoAtualizadoOpt = dataManager.getCursos().stream()
+                .filter(c -> c.getId().equals(cursoId)).findFirst();
+
+        assertTrue(cursoAtualizadoOpt.isPresent());
+
+        Curso cursoAtualizado = cursoAtualizadoOpt.get();
+        assertEquals(novoTitulo, cursoAtualizado.getTitulo());
+        assertEquals(novaDescricao, cursoAtualizado.getDescricao());
     }
 
-    // REQUISITO: Configurar proteção por PIN de acesso (Professor)
     @Test
     void configurarPinDeveAdicionarPinAoCurso() {
-        // TODO: Testar a configuração de PIN em um curso (ex: "c1"):
-        // 1. Chamar configurarPin() e verificar se o retorno é 'true'.
-        // 2. Recuperar o curso na persistência (dataManager).
-        // 3. Verificar se o PIN foi adicionado/configurado corretamente.
+        Curso cursoBase = cursoService.criarCurso("teste", "ah teste", "u3");
+        String cursoId = cursoBase.getId();
+        String pin = "123";
+
+        boolean sucesso = cursoService.configurarPin(cursoId, pin);
+        assertTrue(sucesso);
+
+        Curso cursoAtualizado = dataManager.getCursos().stream()
+                .filter(c -> c.getId().equals(cursoId)).findFirst().get();
+
+        assertEquals(pin, cursoAtualizado.getPinAcesso());
     }
 
-    // REQUISITO: Aprovar/rejeitar cursos (Administrador)
     @Test
     void aprovarCursoDeveMudarStatusParaAtivo() {
-        // TODO: Testar a aprovação de um curso PENDENTE (ex: "c2"):
-        // 1. Chamar aprovarCurso() e verificar se o retorno é 'true'.
-        // 2. Recuperar o curso na persistência (dataManager).
-        // 3. Verificar se o status do curso mudou para ATIVO.
+        Curso cursoPendente = cursoService.criarCurso("curso", "curso", "u3");
+        String cursoId = cursoPendente.getId();
+
+        boolean sucesso = cursoService.aprovarCurso(cursoId);
+
+        assertTrue(sucesso);
+
+        Curso cursoAtualizado = dataManager.getCursos().stream()
+                .filter(c -> c.getId().equals(cursoId)).findFirst().get();
+
+        assertEquals(StatusCurso.ATIVO, cursoAtualizado.getStatus());
     }
 
     @Test
     void rejeitarCursoDeveMudarStatusParaInativo() {
-        // TODO: Testar a rejeição de um curso (ex: "c1"):
-        // 1. Chamar rejeitarCurso() e verificar se o retorno é 'true'.
-        // 2. Recuperar o curso na persistência (dataManager).
-        // 3. Verificar se o status do curso mudou para INATIVO.
+        Curso cursoPendente = cursoService.criarCurso("teste", "teste", "u3");
+        String cursoId = cursoPendente.getId();
+
+        boolean sucesso = cursoService.rejeitarCurso(cursoId);
+
+        assertTrue(sucesso);
+
+        Curso cursoAtualizado = dataManager.getCursos().stream()
+                .filter(c -> c.getId().equals(cursoId)).findFirst().get();
+
+        assertEquals(StatusCurso.INATIVO, cursoAtualizado.getStatus());
     }
 
-    // REQUISITO: Visualizar catálogo de cursos disponíveis (Estudante/Comum)
     @Test
     void visualizarCatalogoDeveRetornarApenasCursosAtivos() {
-        // TODO: Testar a visualização do catálogo:
-        // 1. Chamar visualizarCatalogo().
-        // 2. Verificar se a lista retornada contém APENAS cursos com StatusCurso.ATIVO.
-        // 3. Verificar se o tamanho da lista está correto (baseado nos dados iniciais).
+        Curso cursoAtivoEsperado = cursoService.criarCurso("curso teste", "teste ativo", "u3");
+        String idCursoAtivo = cursoAtivoEsperado.getId();
+
+        cursoService.criarCurso("escondido", "pendente", "u3");
+
+        Curso cursoInativo = cursoService.criarCurso("Curso Rejeitado", "Descrição Inativa", "u3");
+        cursoService.rejeitarCurso(cursoInativo.getId());
+
+        cursoService.aprovarCurso(idCursoAtivo);
+
+        List<Curso> catalogo = cursoService.visualizarCatalogo();
+
+        assertEquals(3, catalogo.size());
+
+        boolean todosSaoAtivos = catalogo.stream().allMatch(c -> c.getStatus() == StatusCurso.ATIVO);
+
+        assertTrue(todosSaoAtivos);
     }
 
-    // REQUISITO: Ingressar em cursos (com inserção de PIN quando necessário)
     @Test
     void ingressarCursoComPinDeveFuncionarComPinCorreto() {
-        // TODO: Testar o ingresso em um curso com PIN (ex: "c2"):
-        // 1. Garantir que o curso está ATIVO (configurar se necessário).
-        // 2. Chamar ingressarCurso() com o PIN CORRETO.
-        // 3. Verificar se o retorno é 'true'.
+        String pinSecreto = "7890";
+        Curso cursoComPin = cursoService.criarCurso("Curso Secreto", "muito secreto", "u3");
+        String cursoId = cursoComPin.getId();
+
+        cursoService.aprovarCurso(cursoId);
+
+        boolean pinConfigurado = cursoService.configurarPin(cursoId, pinSecreto);
+        assertTrue(pinConfigurado);
+
+        boolean sucesso = cursoService.ingressarCurso(cursoId, pinSecreto);
+
+        assertTrue(sucesso);
     }
 
     @Test
     void ingressarCursoComPinDeveFalharComPinIncorreto() {
-        // TODO: Testar o ingresso em um curso com PIN (ex: "c2"):
-        // 1. Garantir que o curso está ATIVO (configurar se necessário).
-        // 2. Chamar ingressarCurso() com um PIN INCORRETO.
-        // 3. Verificar se o retorno é 'false'.
+        String pinCerto = "7890";
+        String pinErrado = "0000";
+
+        Curso cursoComPin = cursoService.criarCurso("curso protegido", "teste de falha", "u3");
+        String cursoId = cursoComPin.getId();
+
+        cursoService.aprovarCurso(cursoId);
+
+        cursoService.configurarPin(cursoId, pinCerto);
+
+        boolean sucesso = cursoService.ingressarCurso(cursoId, pinErrado);
+
+        assertFalse(sucesso);
     }
 
     @Test
     void ingressarCursoSemPinDeveFuncionar() {
-        // TODO: Testar o ingresso em um curso SEM PIN (ex: "c1"):
-        // 1. Chamar ingressarCurso() passando 'null' ou uma string vazia como PIN.
-        // 2. Verificar se o retorno é 'true'.
+        Curso cursoLivre = cursoService.criarCurso("Curso Livre", "Conteúdo aberto", "u3");
+        String cursoId = cursoLivre.getId();
+
+        cursoService.aprovarCurso(cursoId);
+
+        cursoService.configurarPin(cursoId, null);
+
+        boolean sucesso = cursoService.ingressarCurso(cursoId, null);
+
+        assertTrue(sucesso);
     }
 }

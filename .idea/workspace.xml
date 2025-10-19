@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bbb2fedc-5970-497f-9aea-9cc3085d1375" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/CursoServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/CursoServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -44,6 +45,8 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "JUnit.CursoServiceTest.criarCursoDeveAdicionarNovoCursoAPersistencia.executor": "Run",
+    "JUnit.CursoServiceTest.executor": "Run",
+    "JUnit.CursoServiceTest.visualizarCatalogoDeveRetornarApenasCursosAtivos.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -57,7 +60,16 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.CursoServiceTest">
+    <configuration name="CursoServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CodefolioLite" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="CursoServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="CursoServiceTest.criarCursoDeveAdicionarNovoCursoAPersistencia" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="CodefolioLite" />
       <option name="PACKAGE_NAME" value="" />
@@ -68,8 +80,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="CursoServiceTest.visualizarCatalogoDeveRetornarApenasCursosAtivos" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CodefolioLite" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="CursoServiceTest" />
+      <option name="METHOD_NAME" value="visualizarCatalogoDeveRetornarApenasCursosAtivos" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.CursoServiceTest" />
+        <item itemvalue="JUnit.CursoServiceTest.visualizarCatalogoDeveRetornarApenasCursosAtivos" />
         <item itemvalue="JUnit.CursoServiceTest.criarCursoDeveAdicionarNovoCursoAPersistencia" />
       </list>
     </recent_temporary>
@@ -91,7 +115,8 @@
       <updated>1760558094914</updated>
       <workItem from="1760558096823" duration="661000" />
       <workItem from="1760651482204" duration="21000" />
-      <workItem from="1760833685054" duration="2921000" />
+      <workItem from="1760833685054" duration="4732000" />
+      <workItem from="1760903921832" duration="10347000" />
     </task>
     <servers />
   </component>
