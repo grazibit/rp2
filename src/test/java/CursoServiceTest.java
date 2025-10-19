@@ -21,14 +21,21 @@ public class CursoServiceTest {
         this.cursoService = new CursoService(dataManager);
     }
 
-    // REQUISITO: Criar novos cursos (Professor)
     @Test
     void criarCursoDeveAdicionarNovoCursoAPersistencia() {
-        // TODO: Testar a criação de um novo curso:
-        // 1. Verificar se o novo curso não é nulo.
-        // 2. Verificar se o título e a descrição estão corretos.
-        // 3. Confirmar que o status inicial é PENDENTE_APROVACAO.
-        // 4. Garantir que o tamanho da lista de cursos aumentou em 1.
+        String titulo = "Resolução Problemas";
+        String descricao = "materia que blablabla sla";
+        String professorID = "u3";
+        int tamanhoLista = dataManager.getCursos().size();
+
+        Curso novoCurso = cursoService.criarCurso(titulo, descricao, professorID);
+        assertNotNull(novoCurso);
+
+        assertEquals(titulo, novoCurso.getTitulo());
+        assertEquals(descricao, novoCurso.getDescricao());
+
+        assertEquals(StatusCurso.PENDENTE_APROVACAO, novoCurso.getStatus());
+        assertEquals(tamanhoLista + 1 , dataManager.getCursos().size());
     }
 
     // REQUISITO: Editar cursos existentes (Professor/Admin)
