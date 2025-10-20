@@ -23,36 +23,50 @@ public class UsuarioServiceTest {
         this.usuarioService = new UsuarioService(dataManager);
     }
 
-    // REQUISITO: Visualizar todos os usuários cadastrados
     @Test
     void visualizarTodosDeveRetornarQuatroUsuariosIniciais() {
-        // TODO: Testar a visualização de todos os usuários:
-        // 1. Chamar visualizarTodos().
-        // 2. Verificar se a lista retornada tem o tamanho esperado (4 nos dados iniciais).
+        List<Usuario> usuarios = usuarioService.visualizarTodos();
+        assertEquals(4, usuarios.size());
     }
 
-    // REQUISITO: Alterar níveis de acesso (Admin)
     @Test
     void alterarNivelAcessoDeveMudarOModeloDeUsuario() {
-        // TODO: Testar a alteração do nível de acesso de um usuário existente (ex: "u3" para PROFESSOR):
-        // 1. Chamar alterarNivelAcesso() e verificar se retorna 'true'.
-        // 2. Recuperar o usuário na persistência (dataManager).
-        // 3. Verificar se o PapelUsuario foi alterado corretamente para o novo papel.
+        String userId = "u4";
+        PapelUsuario novoPapel = PapelUsuario.ESTUDANTE;
+        boolean resultado = usuarioService.alterarNivelAcesso(userId, novoPapel);
+        assertTrue(resultado);
+
+        Optional<Usuario> usuarioAtualizado = dataManager.getUsuarios().stream()
+                .filter(u -> u.getId().equals(userId))
+                .findFirst();
+
+        assertEquals(novoPapel, usuarioAtualizado.get().getPapel());
     }
 
     @Test
     void alterarNivelAcessoInexistenteDeveFalhar() {
-        // TODO: Testar a alteração do nível de acesso para um usuário inexistente:
-        // 1. Chamar alterarNivelAcesso() com um ID inexistente (ex: "u999").
-        // 2. Verificar se o retorno é 'false'.
+        String userId = "u9";
+        PapelUsuario novoPapel = PapelUsuario.ADMINISTRADOR;
+
+        boolean resultado = usuarioService.alterarNivelAcesso(userId, novoPapel);
+
+        assertFalse(resultado);
     }
 
-    // REQUISITO: Filtrar e buscar usuários por nome, email ou papel (Admin)
     @Test
     void buscarUsuariosDeveFiltrarPorNome() {
-        // TODO: Testar a busca de usuários por parte do nome (ex: "ana"):
-        // 1. Chamar buscarUsuarios("ana", null).
-        // 2. Verificar se a lista retornada tem o tamanho correto (1) e o nome do usuário está correto.
+        List<Usuario> resultado = usuarioService.buscarUsuarios("ana", null);
+        assertEquals(1, resultado.size());
+        assertEquals("Ana Admin",resultado.get(0).getNome());
+    }
+
+    @Test
+    void buscarUsuariosDeveFiltrarPorNomeEPapel(){
+        List<Usuario> resultado = usuarioService.buscarUsuarios("ana", PapelUsuario.ADMINISTRADOR);
+        assertEquals(1,resultado.size());
+
+        assertEquals("Ana Admin", resultado.get(0).getNome());
+        assertEquals(PapelUsuario.ADMINISTRADOR,resultado.get(0).getPapel());
     }
 
     @Test
@@ -91,5 +105,19 @@ public class UsuarioServiceTest {
         // 1. Chamar editarPerfil() e verificar se retorna 'true'.
         // 2. Recuperar o usuário na persistência (dataManager).
         // 3. Verificar se o nome do usuário foi atualizado corretamente.
+    }
+
+    @Test
+    void buscarUsuariosDeveRetornarListaVaziaParaTermoInexistente() {
+        List<Usuario> resultado = usuarioService.buscarUsuarios("abc", null);
+        assertTrue(resultado.isEmpty());
+    }
+
+    @Test
+    void editarPerfilInexistenteDeveFalhar() {
+        String userID = "u9";
+        String novoNome = "Teste";
+        boolean resultado = usuarioService.editarPerfil(userID, novoNome);
+        assertFalse(resultado);
     }
 }
