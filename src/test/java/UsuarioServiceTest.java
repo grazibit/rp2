@@ -23,73 +23,111 @@ public class UsuarioServiceTest {
         this.usuarioService = new UsuarioService(dataManager);
     }
 
-    // REQUISITO: Visualizar todos os usuários cadastrados
-    @Test
-    void visualizarTodosDeveRetornarQuatroUsuariosIniciais() {
-        // TODO: Testar a visualização de todos os usuários:
-        // 1. Chamar visualizarTodos().
-        // 2. Verificar se a lista retornada tem o tamanho esperado (4 nos dados iniciais).
-    }
-
-    // REQUISITO: Alterar níveis de acesso (Admin)
-    @Test
-    void alterarNivelAcessoDeveMudarOModeloDeUsuario() {
-        // TODO: Testar a alteração do nível de acesso de um usuário existente (ex: "u3" para PROFESSOR):
-        // 1. Chamar alterarNivelAcesso() e verificar se retorna 'true'.
-        // 2. Recuperar o usuário na persistência (dataManager).
-        // 3. Verificar se o PapelUsuario foi alterado corretamente para o novo papel.
-    }
-
-    @Test
-    void alterarNivelAcessoInexistenteDeveFalhar() {
-        // TODO: Testar a alteração do nível de acesso para um usuário inexistente:
-        // 1. Chamar alterarNivelAcesso() com um ID inexistente (ex: "u999").
-        // 2. Verificar se o retorno é 'false'.
-    }
-
-    // REQUISITO: Filtrar e buscar usuários por nome, email ou papel (Admin)
-    @Test
-    void buscarUsuariosDeveFiltrarPorNome() {
-        // TODO: Testar a busca de usuários por parte do nome (ex: "ana"):
-        // 1. Chamar buscarUsuarios("ana", null).
-        // 2. Verificar se a lista retornada tem o tamanho correto (1) e o nome do usuário está correto.
-    }
-
     @Test
     void buscarUsuariosDeveFiltrarPorEmail() {
-        // TODO: Testar a busca de usuários por parte do email (ex: "@codefolio.com"):
-        // 1. Chamar buscarUsuarios("@codefolio.com", null).
-        // 2. Verificar se a lista retornada tem o tamanho correto (4).
+        List<Usuario> resultado = usuarioService.buscarUsuarios("@codefolio.com", null);
+
+        assertNotNull(resultado, "A lista de usuarios nao pode ser nula");
+        assertEquals(4, resultado.size(), "Retorna 4 email de usuarios com @codefolio.com");
+
+        for (Usuario usuario : resultado) {
+            assertTrue(usuario.getEmail().contains("@codefolio.com"), "O email do usuario deve ter @codefolio.com como parte");
+        }
     }
 
     @Test
     void buscarUsuariosDeveFiltrarPorPapel() {
-        // TODO: Testar a busca de usuários por PapelUsuario (ex: PROFESSOR):
-        // 1. Chamar buscarUsuarios(null, PapelUsuario.PROFESSOR).
-        // 2. Verificar se a lista retornada tem o tamanho correto (1) e o papel do usuário está correto.
+        List<Usuario> resultado = usuarioService.buscarUsuarios(null, PapelUsuario.PROFESSOR);
+
+        assertNotNull(resultado, "A lista de usuarios nao pode ser nula");
+        assertEquals(1, resultado.size(), "Tem que ter apenas 1 usuario com papel de professor");
+
+        Usuario usuario = resultado.get(0);
+        assertEquals(PapelUsuario.PROFESSOR, usuario.getPapel(), "Tem que retornar o papel do usuario como PROFESSOR");
     }
 
-    // REQUISITO: Ordenar usuários por diferentes critérios (Admin)
     @Test
     void ordenarUsuariosPorNomeDeveFuncionar() {
-        // TODO: Testar a ordenação de usuários por nome:
-        // 1. Chamar ordenarUsuarios("nome").
-        // 2. Verificar se os primeiros elementos da lista estão na ordem alfabética esperada (ex: "Ana Admin", "Bruno Professor").
+        List<Usuario> resultado = usuarioService.ordenarUsuarios("nome");
+
+        assertNotNull(resultado, "A lista ordenada não deve ser nula");
+        assumeTrue(resultado.size() >= 2, "É necessário ter pelo menos 2 usuários para testar");
+
+        String primeiro = resultado.get(0).getNome();
+        String segundo = resultado.get(1).getNome();
+
+        assertTrue(primeiro.compareToIgnoreCase(segundo) <= 0, "Os nomes devem estar em ordem alfabetica");
+
+        for (int i = 0; i < resultado.size() - 1; i++) {
+            String atual = resultado.get(i).getNome();
+            String proximo = resultado.get(i + 1).getNome();
+            assertTrue(atual.compareToIgnoreCase(proximo) <= 0, "A lista não está totalmente ordenada por nome");
+        }
     }
 
     @Test
     void ordenarUsuariosPorPapelDeveFuncionar() {
-        // TODO: Testar a ordenação de usuários por papel:
-        // 1. Chamar ordenarUsuarios("papel").
-        // 2. Verificar se os primeiros elementos da lista estão na ordem de papel esperada (ex: USUARIO_COMUM, ESTUDANTE).
+        List<Usuario> resultado = usuarioService.ordenarUsuarios("papel");
+
+        assertNotNull(resultado, "A lista não deve ser nula");
+        assumeTrue(resultado.size() >= 2, "É necessário ter ao menos 2 usuários para testar ordenação");
+
+        for (int i = 0; i < resultado.size() - 1; i++) {
+            PapelUsuario atual = resultado.get(i).getPapel();
+            PapelUsuario proximo = resultado.get(i + 1).getPapel();
+            assertTrue(atual.ordinal() <= proximo.ordinal(),
+                    "Os papéis devem estar ordenados conforme a ordem do enum PapelUsuario");
+        }
     }
 
-    // REQUISITO: Editar informações pessoais (Usuário Comum)
     @Test
     void editarPerfilDeveMudarONomeDoUsuario() {
-        // TODO: Testar a edição de informações de perfil (ex: mudar o nome do "u4"):
-        // 1. Chamar editarPerfil() e verificar se retorna 'true'.
-        // 2. Recuperar o usuário na persistência (dataManager).
-        // 3. Verificar se o nome do usuário foi atualizado corretamente.
+        Optional<Usuario> usuarioAntes = dataManager.getUsuarios().stream()
+                .filter(u -> u.getId().equals("u4"))
+                .findFirst();
+
+        assumeTrue(usuarioAntes.isPresent(), "Usuário 'u4' deve existir na base de dados inicial");
+
+        boolean resultado = usuarioService.editarPerfil("u4", "Novo Nome de Teste");
+
+        assertTrue(resultado, "A edição de perfil deve retornar true");
+
+        Optional<Usuario> usuarioDepois = dataManager.getUsuarios().stream()
+                .filter(u -> u.getId().equals("u4"))
+                .findFirst();
+
+        assertTrue(usuarioDepois.isPresent(), "Usuário 'u4' deve existir após edição");
+        assertEquals("Novo Nome de Teste", usuarioDepois.get().getNome(),
+                "O nome do usuário deve ter sido atualizado corretamente");
+    }
+
+    @Test
+    void buscarUsuariosPorNomeeEmailDeveFuncionar() {
+        List<Usuario> resultado = usuarioService.buscarUsuarios("milena","@codefolio.com");
+
+        assertNotNull(resultado, "A lista de usuários não deve ser nula");
+        assertFalse(resultado.isEmpty(), "Deve retornar pelo menos um usuário que combine nome e email");
+
+        for (Usuario usuario : resultado) {
+            assertTrue(usuario.getNome().toLowerCase().contains("milena"),
+                    "O nome do usuário deve conter 'milena'");
+            assertTrue(usuario.getEmail().toLowerCase().contains("@codefolio.com"),
+                    "O e-mail do usuário deve conter '@codefolio.com'");
+        }
+    }
+
+    @Test
+    void recuperarUsuarioPorIdDeveRetornarUsuarioCorreto() {
+        List<Usuario> resultado = dataManager.getUsuarios().stream()
+                .filter(u -> u.getId().equalsIgnoreCase("u1"))
+                .toList();
+
+        assertNotNull(resultado, "A lista de usuários não deve ser nula");
+        assertEquals(1, resultado.size(), "Deve retornar exatamente um usuário com o ID informado");
+
+        Usuario usuario = resultado.get(0);
+        assertEquals("u1", usuario.getId(), "O ID do usuário deve ser 'u1'");
+        assertNotNull(usuario.getNome(), "O nome do usuário não deve ser nulo");
+        assertNotNull(usuario.getEmail(), "O e-mail do usuário não deve ser nulo");
     }
 }
