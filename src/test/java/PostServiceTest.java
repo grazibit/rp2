@@ -97,6 +97,7 @@ public class PostServiceTest {
         List<Post> postsFiltrados = postService.filtrarPorTag("python");
         assertTrue(postsFiltrados.isEmpty());
 
+
     }
 
     // REQUISITO: Visualizar métricas de engajamento (Administrador)
