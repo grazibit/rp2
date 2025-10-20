@@ -40,12 +40,7 @@ public class PostServiceTest {
         assertTrue(resultado, "A remoção de um post existente deveria retornar true.");
         int tamanhoFinal = postService.visualizarTodos().size();
         assertEquals(tamanho - 1, tamanhoFinal);
-
-        //
-        //TODO RICHARD
-        // 4. Garantir que o post "p1" não existe mais na persistência (dataManager).
-
-
+        assertFalse(dataManager.getPosts().stream().anyMatch(p -> p.getId().equals("p1")));
     }
 
     @Test
@@ -58,18 +53,16 @@ public class PostServiceTest {
 
     // REQUISITO: Curtir/descurtir posts (Usuário Comum)
     @Test
-    @DisplayName("DeveIncrementarContadorDeCurtidas")
     void curtirPostDeveIncrementarContadorDeCurtidas() {
-        // TODO RICHARD
-        //  Testar a função de curtir post (ex: "p2"):
-        // 1. Obter o número de curtidas iniciais do post.
+        Optional<Post> postInicialOpt = dataManager.getPosts().stream().filter(p -> p.getId().equals("p2")).findFirst();
+        assumeTrue(postInicialOpt.isPresent());
+        Post postInicial = postInicialOpt.get();
+        int curtidasIniciais = postInicial.getCurtidas(); // 2
 
+        boolean resultado = postService.curtirPost("p2");
 
-        // 2. Chamar curtirPost("p2") e verificar se retorna 'true'.
-
-
-        // 3. Verificar se o contador de curtidas do post na persistência (dataManager) aumentou em 1.
-
+        assertTrue(resultado);
+        assertEquals(curtidasIniciais + 1, postInicial.getCurtidas()); // 3
     }
 
     // REQUISITO: Filtrar artigos por temas/tags (Usuário Comum)
