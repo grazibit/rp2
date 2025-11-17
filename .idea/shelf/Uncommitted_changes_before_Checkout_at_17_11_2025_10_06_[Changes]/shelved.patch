@@ -1,0 +1,908 @@
+Index: src/main/java/MainApp.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/MainApp.java b/src/test/java/MainApp.java
+rename from src/main/java/MainApp.java
+rename to src/test/java/MainApp.java
+--- a/src/main/java/MainApp.java	(revision 6ceb9fb3f2954b95b60583ae5c7d60e793fc4fe4)
++++ b/src/test/java/MainApp.java	(date 1763384612019)
+@@ -1,47 +1,55 @@
++package sua.pasta.rp2.testes; // Use o pacote correto do seu projeto
++
+ import model.PapelUsuario;
+ import service.CursoService;
+ import service.JsonDataManager;
+ import service.PostService;
+ import service.UsuarioService;
+ 
+-void main() {
+-    // 1. Inicializa o Data Manager com dados simulados
+-    JsonDataManager dataManager = new JsonDataManager();
++// Classe MainApp declarada explicitamente
++public class MainApp {
++
++    // Método main tradicional (público, estático, void, com String[] args)
++    public static void main(String[] args) {
++        // 1. Inicializa o Data Manager com dados simulados
++        JsonDataManager dataManager = new JsonDataManager();
+ 
+-    // 2. Inicializa os Serviços
+-    UsuarioService usuarioService = new UsuarioService(dataManager);
+-    CursoService cursoService = new CursoService(dataManager);
+-    PostService postService = new PostService(dataManager);
++        // 2. Inicializa os Serviços
++        UsuarioService usuarioService = new UsuarioService(dataManager);
++        CursoService cursoService = new CursoService(dataManager);
++        PostService postService = new PostService(dataManager);
+ 
+-    IO.println("--- DADOS INICIAIS (SIMULAÇÃO JSON) ---");
+-    IO.println("Usuários:\n" + dataManager.exportUsuariosToJson());
+-    IO.println("\nCursos:\n" + dataManager.exportCursosToJson());
+-    IO.println("\n----------------------------------------\n");
++        // ATENÇÃO: Substitua 'IO.println' pelo método de saída correto (System.out.println)
++        System.out.println("--- DADOS INICIAIS (SIMULAÇÃO JSON) ---");
++        System.out.println("Usuários:\n" + dataManager.exportUsuariosToJson());
++        System.out.println("\nCursos:\n" + dataManager.exportCursosToJson());
++        System.out.println("\n----------------------------------------\n");
+ 
+-    // Exemplo de Requisito 1: Gerenciamento de Usuários (ADMINISTRADOR)
+-    IO.println("ADMIN: Alterando papel de Carla (u3) para PROFESSOR...");
+-    usuarioService.alterarNivelAcesso("u3", PapelUsuario.PROFESSOR);
+-    IO.println("Busca por Professores:");
+-    usuarioService.buscarUsuarios(null, PapelUsuario.PROFESSOR)
+-            .forEach(u -> IO.println("- " + u.getNome() + " | " + u.getPapel()));
++        // Exemplo de Requisito 1: Gerenciamento de Usuários (ADMINISTRADOR)
++        System.out.println("ADMIN: Alterando papel de Carla (u3) para PROFESSOR...");
++        usuarioService.alterarNivelAcesso("u3", PapelUsuario.PROFESSOR);
++        System.out.println("Busca por Professores:");
++        usuarioService.buscarUsuarios(null, PapelUsuario.PROFESSOR)
++                .forEach(u -> System.out.println("- " + u.getNome() + " | " + u.getPapel()));
+ 
+-    // Exemplo de Requisito 2: Gerenciamento de Cursos (ADMINISTRADOR)
+-    IO.println("\nADMIN: Aprovando curso c2...");
+-    cursoService.aprovarCurso("c2");
+-    IO.println("Catálogo de Cursos Ativos:");
+-    cursoService.visualizarCatalogo()
+-            .forEach(c -> IO.println("- " + c.getTitulo() + " (Status: " + c.getStatus() + ")"));
++        // Exemplo de Requisito 2: Gerenciamento de Cursos (ADMINISTRADOR)
++        System.out.println("\nADMIN: Aprovando curso c2...");
++        cursoService.aprovarCurso("c2");
++        System.out.println("Catálogo de Cursos Ativos:");
++        cursoService.visualizarCatalogo()
++                .forEach(c -> System.out.println("- " + c.getTitulo() + " (Status: " + c.getStatus() + ")"));
+ 
+-    // Exemplo de Requisito 3: Acesso a Cursos (ESTUDANTE)
+-    IO.println("\nESTUDANTE: Tentando ingressar no curso c2 (com PIN 1234)...");
+-    boolean ingressou = cursoService.ingressarCurso("c2", "1234");
+-    IO.println("Ingresso bem-sucedido? " + ingressou);
++        // Exemplo de Requisito 3: Acesso a Cursos (ESTUDANTE)
++        System.out.println("\nESTUDANTE: Tentando ingressar no curso c2 (com PIN 1234)...");
++        boolean ingressou = cursoService.ingressarCurso("c2", "1234");
++        System.out.println("Ingresso bem-sucedido? " + ingressou);
+ 
+-    // Exemplo de Requisito 4: Interação com Posts (USUÁRIO COMUM)
+-    IO.println("\nCOMUM: Filtrando posts por tag 'Java'...");
+-    postService.filtrarPorTag("Java")
+-            .forEach(p -> IO.println("- " + p.getTitulo() + " (Curtidas: " + p.getCurtidas() + ")"));
++        // Exemplo de Requisito 4: Interação com Posts (USUÁRIO COMUM)
++        System.out.println("\nCOMUM: Filtrando posts por tag 'Java'...");
++        postService.filtrarPorTag("Java")
++                .forEach(p -> System.out.println("- " + p.getTitulo() + " (Curtidas: " + p.getCurtidas() + ")"));
+ 
+-    IO.println("\n--- SIMULAÇÃO JSON APÓS ALTERAÇÕES ---");
+-    IO.println("Usuários:\n" + dataManager.exportUsuariosToJson());
++        System.out.println("\n--- SIMULAÇÃO JSON APÓS ALTERAÇÕES ---");
++        System.out.println("Usuários:\n" + dataManager.exportUsuariosToJson());
++    }
+ }
+\ No newline at end of file
+Index: pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\"\r\n         xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">\r\n    <modelVersion>4.0.0</modelVersion>\r\n\r\n    <groupId>org.example</groupId>\r\n    <artifactId>CodefolioLite</artifactId>\r\n    <version>1.0-SNAPSHOT</version>\r\n\r\n    <properties>\r\n        <maven.compiler.source>25</maven.compiler.source>\r\n        <maven.compiler.target>25</maven.compiler.target>\r\n        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>\r\n    </properties>\r\n    <dependencies>\r\n        <dependency>\r\n            <groupId>org.junit.jupiter</groupId>\r\n            <artifactId>junit-jupiter</artifactId>\r\n            <version>RELEASE</version>\r\n            <scope>test</scope>\r\n        </dependency>\r\n    </dependencies>\r\n    <build>\r\n        <plugins>\r\n            <plugin>\r\n                <groupId>org.apache.maven.plugins</groupId>\r\n                <artifactId>maven-compiler-plugin</artifactId>\r\n                <configuration>\r\n                    <source>25</source>\r\n                    <target>25</target>\r\n                </configuration>\r\n            </plugin>\r\n        </plugins>\r\n    </build>\r\n\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pom.xml b/pom.xml
+--- a/pom.xml	(revision 6ceb9fb3f2954b95b60583ae5c7d60e793fc4fe4)
++++ b/pom.xml	(date 1763384401041)
+@@ -9,28 +9,65 @@
+     <version>1.0-SNAPSHOT</version>
+ 
+     <properties>
+-        <maven.compiler.source>25</maven.compiler.source>
+-        <maven.compiler.target>25</maven.compiler.target>
++        <maven.compiler.source>17</maven.compiler.source>
++        <maven.compiler.target>17</maven.compiler.target>
+         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
++
++        <junit.version>5.10.2</junit.version>
++        <selenium.version>4.20.0</selenium.version>
++        <webdrivermanager.version>5.8.0</webdrivermanager.version>
++        <surefire.plugin.version>3.2.5</surefire.plugin.version>
+     </properties>
++
+     <dependencies>
++
++        <dependency>
++            <groupId>org.junit.jupiter</groupId>
++            <artifactId>junit-jupiter-api</artifactId>
++            <version>${junit.version}</version>
++            <scope>test</scope>
++        </dependency>
+         <dependency>
+             <groupId>org.junit.jupiter</groupId>
+-            <artifactId>junit-jupiter</artifactId>
+-            <version>RELEASE</version>
++            <artifactId>junit-jupiter-engine</artifactId>
++            <version>${junit.version}</version>
++            <scope>test</scope>
++        </dependency>
++
++        <dependency>
++            <groupId>org.seleniumhq.selenium</groupId>
++            <artifactId>selenium-java</artifactId>
++            <version>${selenium.version}</version>
++            <scope>test</scope>
++        </dependency>
++
++        <dependency>
++            <groupId>io.github.bonigarcia</groupId>
++            <artifactId>webdrivermanager</artifactId>
++            <version>${webdrivermanager.version}</version>
+             <scope>test</scope>
+         </dependency>
++
+     </dependencies>
++
+     <build>
+         <plugins>
+             <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-compiler-plugin</artifactId>
++                <version>3.11.0</version>
+                 <configuration>
+-                    <source>25</source>
+-                    <target>25</target>
++                    <source>${maven.compiler.source}</source>
++                    <target>${maven.compiler.target}</target>
+                 </configuration>
+             </plugin>
++
++            <plugin>
++                <groupId>org.apache.maven.plugins</groupId>
++                <artifactId>maven-surefire-plugin</artifactId>
++                <version>${surefire.plugin.version}</version>
++            </plugin>
++
+         </plugins>
+     </build>
+ 
+Index: src/test/java/CursoServiceTest.java
+===================================================================
+diff --git a/src/test/java/CursoServiceTest.java b/src/test/java/CursoServiceTest.java
+deleted file mode 100644
+--- a/src/test/java/CursoServiceTest.java	(revision 6ceb9fb3f2954b95b60583ae5c7d60e793fc4fe4)
++++ /dev/null	(revision 6ceb9fb3f2954b95b60583ae5c7d60e793fc4fe4)
+@@ -1,174 +0,0 @@
+-import model.Curso;
+-import model.StatusCurso;
+-import org.junit.jupiter.api.BeforeEach;
+-import org.junit.jupiter.api.Test;
+-import service.CursoService;
+-import service.JsonDataManager;
+-
+-import java.util.List;
+-import java.util.Optional;
+-import static org.junit.jupiter.api.Assertions.*;
+-import static org.junit.jupiter.api.Assumptions.assumeTrue;
+-
+-public class CursoServiceTest {
+-
+-    private JsonDataManager dataManager;
+-    private CursoService cursoService;
+-
+-    @BeforeEach
+-    void setUp() {
+-        this.dataManager = new JsonDataManager();
+-        this.cursoService = new CursoService(dataManager);
+-    }
+-
+-    @Test
+-    void criarCursoDeveAdicionarNovoCursoAPersistencia() {
+-        String titulo = "Resolução Problemas";
+-        String descricao = "materia que blablabla sla";
+-        String professorID = "u3";
+-        int tamanhoLista = dataManager.getCursos().size();
+-
+-        Curso novoCurso = cursoService.criarCurso(titulo, descricao, professorID);
+-        assertNotNull(novoCurso);
+-
+-        assertEquals(titulo, novoCurso.getTitulo());
+-        assertEquals(descricao, novoCurso.getDescricao());
+-
+-        assertEquals(StatusCurso.PENDENTE_APROVACAO, novoCurso.getStatus());
+-        assertEquals(tamanhoLista + 1, dataManager.getCursos().size());
+-    }
+-
+-    @Test
+-    void editarCursoDeveAtualizarTituloEDescricao() {
+-        Curso cursoEditar = cursoService.criarCurso("Resolução Problemas", "materia que blablabla sla", "u3");
+-
+-        String cursoId = cursoEditar.getId();
+-        String novoTitulo = "POO";
+-        String novaDescricao = "Ai sla oq não sei oq la";
+-
+-        boolean editou = cursoService.editarCurso(cursoId, novoTitulo, novaDescricao);
+-        assertTrue(editou);
+-
+-        Optional<Curso> cursoAtualizadoOpt = dataManager.getCursos().stream()
+-                .filter(c -> c.getId().equals(cursoId)).findFirst();
+-
+-        assertTrue(cursoAtualizadoOpt.isPresent());
+-
+-        Curso cursoAtualizado = cursoAtualizadoOpt.get();
+-        assertEquals(novoTitulo, cursoAtualizado.getTitulo());
+-        assertEquals(novaDescricao, cursoAtualizado.getDescricao());
+-    }
+-
+-    @Test
+-    void configurarPinDeveAdicionarPinAoCurso() {
+-        Curso cursoBase = cursoService.criarCurso("teste", "ah teste", "u3");
+-        String cursoId = cursoBase.getId();
+-        String pin = "123";
+-
+-        boolean sucesso = cursoService.configurarPin(cursoId, pin);
+-        assertTrue(sucesso);
+-
+-        Curso cursoAtualizado = dataManager.getCursos().stream()
+-                .filter(c -> c.getId().equals(cursoId)).findFirst().get();
+-
+-        assertEquals(pin, cursoAtualizado.getPinAcesso());
+-    }
+-
+-    @Test
+-    void aprovarCursoDeveMudarStatusParaAtivo() {
+-        Curso cursoPendente = cursoService.criarCurso("curso", "curso", "u3");
+-        String cursoId = cursoPendente.getId();
+-
+-        boolean sucesso = cursoService.aprovarCurso(cursoId);
+-
+-        assertTrue(sucesso);
+-
+-        Curso cursoAtualizado = dataManager.getCursos().stream()
+-                .filter(c -> c.getId().equals(cursoId)).findFirst().get();
+-
+-        assertEquals(StatusCurso.ATIVO, cursoAtualizado.getStatus());
+-    }
+-
+-    @Test
+-    void rejeitarCursoDeveMudarStatusParaInativo() {
+-        Curso cursoPendente = cursoService.criarCurso("teste", "teste", "u3");
+-        String cursoId = cursoPendente.getId();
+-
+-        boolean sucesso = cursoService.rejeitarCurso(cursoId);
+-
+-        assertTrue(sucesso);
+-
+-        Curso cursoAtualizado = dataManager.getCursos().stream()
+-                .filter(c -> c.getId().equals(cursoId)).findFirst().get();
+-
+-        assertEquals(StatusCurso.INATIVO, cursoAtualizado.getStatus());
+-    }
+-
+-    @Test
+-    void visualizarCatalogoDeveRetornarApenasCursosAtivos() {
+-        Curso cursoAtivoEsperado = cursoService.criarCurso("curso teste", "teste ativo", "u3");
+-        String idCursoAtivo = cursoAtivoEsperado.getId();
+-
+-        cursoService.criarCurso("escondido", "pendente", "u3");
+-
+-        Curso cursoInativo = cursoService.criarCurso("Curso Rejeitado", "Descrição Inativa", "u3");
+-        cursoService.rejeitarCurso(cursoInativo.getId());
+-
+-        cursoService.aprovarCurso(idCursoAtivo);
+-
+-        List<Curso> catalogo = cursoService.visualizarCatalogo();
+-
+-        assertEquals(3, catalogo.size());
+-
+-        boolean todosSaoAtivos = catalogo.stream().allMatch(c -> c.getStatus() == StatusCurso.ATIVO);
+-
+-        assertTrue(todosSaoAtivos);
+-    }
+-
+-    @Test
+-    void ingressarCursoComPinDeveFuncionarComPinCorreto() {
+-        String pinSecreto = "7890";
+-        Curso cursoComPin = cursoService.criarCurso("Curso Secreto", "muito secreto", "u3");
+-        String cursoId = cursoComPin.getId();
+-
+-        cursoService.aprovarCurso(cursoId);
+-
+-        boolean pinConfigurado = cursoService.configurarPin(cursoId, pinSecreto);
+-        assertTrue(pinConfigurado);
+-
+-        boolean sucesso = cursoService.ingressarCurso(cursoId, pinSecreto);
+-
+-        assertTrue(sucesso);
+-    }
+-
+-    @Test
+-    void ingressarCursoComPinDeveFalharComPinIncorreto() {
+-        String pinCerto = "7890";
+-        String pinErrado = "0000";
+-
+-        Curso cursoComPin = cursoService.criarCurso("curso protegido", "teste de falha", "u3");
+-        String cursoId = cursoComPin.getId();
+-
+-        cursoService.aprovarCurso(cursoId);
+-
+-        cursoService.configurarPin(cursoId, pinCerto);
+-
+-        boolean sucesso = cursoService.ingressarCurso(cursoId, pinErrado);
+-
+-        assertFalse(sucesso);
+-    }
+-
+-    @Test
+-    void ingressarCursoSemPinDeveFuncionar() {
+-        Curso cursoLivre = cursoService.criarCurso("Curso Livre", "Conteúdo aberto", "u3");
+-        String cursoId = cursoLivre.getId();
+-
+-        cursoService.aprovarCurso(cursoId);
+-
+-        cursoService.configurarPin(cursoId, null);
+-
+-        boolean sucesso = cursoService.ingressarCurso(cursoId, null);
+-
+-        assertTrue(sucesso);
+-    }
+-}
+\ No newline at end of file
+Index: src/test/java/UsuarioServiceTest.java
+===================================================================
+diff --git a/src/test/java/UsuarioServiceTest.java b/src/test/java/UsuarioServiceTest.java
+deleted file mode 100644
+--- a/src/test/java/UsuarioServiceTest.java	(revision 6ceb9fb3f2954b95b60583ae5c7d60e793fc4fe4)
++++ /dev/null	(revision 6ceb9fb3f2954b95b60583ae5c7d60e793fc4fe4)
+@@ -1,123 +0,0 @@
+-import model.PapelUsuario;
+-import model.Usuario;
+-import org.junit.jupiter.api.BeforeEach;
+-import org.junit.jupiter.api.Test;
+-import service.JsonDataManager;
+-import service.UsuarioService;
+-
+-import java.util.List;
+-import java.util.Optional;
+-import static org.junit.jupiter.api.Assertions.*;
+-import static org.junit.jupiter.api.Assumptions.assumeTrue;
+-
+-public class UsuarioServiceTest {
+-
+-    private JsonDataManager dataManager;
+-    private UsuarioService usuarioService;
+-
+-    // Configuração executada antes de cada teste
+-    @BeforeEach
+-    void setUp() {
+-        // Garante que o estado inicial (dados simulados) seja redefinido para cada teste
+-        this.dataManager = new JsonDataManager();
+-        this.usuarioService = new UsuarioService(dataManager);
+-    }
+-
+-    @Test
+-    void visualizarTodosDeveRetornarQuatroUsuariosIniciais() {
+-        List<Usuario> usuarios = usuarioService.visualizarTodos();
+-        assertEquals(4, usuarios.size());
+-    }
+-
+-    @Test
+-    void alterarNivelAcessoDeveMudarOModeloDeUsuario() {
+-        String userId = "u4";
+-        PapelUsuario novoPapel = PapelUsuario.ESTUDANTE;
+-        boolean resultado = usuarioService.alterarNivelAcesso(userId, novoPapel);
+-        assertTrue(resultado);
+-
+-        Optional<Usuario> usuarioAtualizado = dataManager.getUsuarios().stream()
+-                .filter(u -> u.getId().equals(userId))
+-                .findFirst();
+-
+-        assertEquals(novoPapel, usuarioAtualizado.get().getPapel());
+-    }
+-
+-    @Test
+-    void alterarNivelAcessoInexistenteDeveFalhar() {
+-        String userId = "u9";
+-        PapelUsuario novoPapel = PapelUsuario.ADMINISTRADOR;
+-
+-        boolean resultado = usuarioService.alterarNivelAcesso(userId, novoPapel);
+-
+-        assertFalse(resultado);
+-    }
+-
+-    @Test
+-    void buscarUsuariosDeveFiltrarPorNome() {
+-        List<Usuario> resultado = usuarioService.buscarUsuarios("ana", null);
+-        assertEquals(1, resultado.size());
+-        assertEquals("Ana Admin",resultado.get(0).getNome());
+-    }
+-
+-    @Test
+-    void buscarUsuariosDeveFiltrarPorNomeEPapel(){
+-        List<Usuario> resultado = usuarioService.buscarUsuarios("ana", PapelUsuario.ADMINISTRADOR);
+-        assertEquals(1,resultado.size());
+-
+-        assertEquals("Ana Admin", resultado.get(0).getNome());
+-        assertEquals(PapelUsuario.ADMINISTRADOR,resultado.get(0).getPapel());
+-    }
+-
+-    @Test
+-    void buscarUsuariosDeveFiltrarPorEmail() {
+-        // TODO: Testar a busca de usuários por parte do email (ex: "@codefolio.com"):
+-        // 1. Chamar buscarUsuarios("@codefolio.com", null).
+-        // 2. Verificar se a lista retornada tem o tamanho correto (4).
+-    }
+-
+-    @Test
+-    void buscarUsuariosDeveFiltrarPorPapel() {
+-        // TODO: Testar a busca de usuários por PapelUsuario (ex: PROFESSOR):
+-        // 1. Chamar buscarUsuarios(null, PapelUsuario.PROFESSOR).
+-        // 2. Verificar se a lista retornada tem o tamanho correto (1) e o papel do usuário está correto.
+-    }
+-
+-    // REQUISITO: Ordenar usuários por diferentes critérios (Admin)
+-    @Test
+-    void ordenarUsuariosPorNomeDeveFuncionar() {
+-        // TODO: Testar a ordenação de usuários por nome:
+-        // 1. Chamar ordenarUsuarios("nome").
+-        // 2. Verificar se os primeiros elementos da lista estão na ordem alfabética esperada (ex: "Ana Admin", "Bruno Professor").
+-    }
+-
+-    @Test
+-    void ordenarUsuariosPorPapelDeveFuncionar() {
+-        // TODO: Testar a ordenação de usuários por papel:
+-        // 1. Chamar ordenarUsuarios("papel").
+-        // 2. Verificar se os primeiros elementos da lista estão na ordem de papel esperada (ex: USUARIO_COMUM, ESTUDANTE).
+-    }
+-
+-    // REQUISITO: Editar informações pessoais (Usuário Comum)
+-    @Test
+-    void editarPerfilDeveMudarONomeDoUsuario() {
+-        // TODO: Testar a edição de informações de perfil (ex: mudar o nome do "u4"):
+-        // 1. Chamar editarPerfil() e verificar se retorna 'true'.
+-        // 2. Recuperar o usuário na persistência (dataManager).
+-        // 3. Verificar se o nome do usuário foi atualizado corretamente.
+-    }
+-
+-    @Test
+-    void buscarUsuariosDeveRetornarListaVaziaParaTermoInexistente() {
+-        List<Usuario> resultado = usuarioService.buscarUsuarios("abc", null);
+-        assertTrue(resultado.isEmpty());
+-    }
+-
+-    @Test
+-    void editarPerfilInexistenteDeveFalhar() {
+-        String userID = "u9";
+-        String novoNome = "Teste";
+-        boolean resultado = usuarioService.editarPerfil(userID, novoNome);
+-        assertFalse(resultado);
+-    }
+-}
+\ No newline at end of file
+Index: src/test/java/PostServiceTest.java
+===================================================================
+diff --git a/src/test/java/PostServiceTest.java b/src/test/java/PostServiceTest.java
+deleted file mode 100644
+--- a/src/test/java/PostServiceTest.java	(revision 6ceb9fb3f2954b95b60583ae5c7d60e793fc4fe4)
++++ /dev/null	(revision 6ceb9fb3f2954b95b60583ae5c7d60e793fc4fe4)
+@@ -1,113 +0,0 @@
+-import model.Post;
+-import org.junit.jupiter.api.BeforeEach;
+-import org.junit.jupiter.api.DisplayName;
+-import org.junit.jupiter.api.Test;
+-import service.JsonDataManager;
+-import service.PostService;
+-
+-import java.util.List;
+-import java.util.Optional;
+-
+-import static org.junit.jupiter.api.Assertions.*;
+-import static org.junit.jupiter.api.Assumptions.assumeTrue;
+-
+-public class PostServiceTest {
+-
+-    private JsonDataManager dataManager;
+-    private PostService postService;
+-
+-    @BeforeEach
+-    void setUp() {
+-        this.dataManager = new JsonDataManager();
+-        this.postService = new PostService(dataManager);
+-    }
+-
+-    // REQUISITO: Visualizar posts/artigos (Usuário Comum)
+-    @Test
+-    @DisplayName("DeveRetornarTodosOsPostsIniciais")
+-    void visualizarTodosDeveRetornarTodosOsPostsIniciais() {
+-        // TODO: Testar a visualização de todos os posts:
+-        List<Post> posts = postService.visualizarTodos();
+-        assertEquals(2, posts.size());
+-    }
+-
+-    // REQUISITO: Remover posts inadequados (Administrador)
+-    @Test
+-    @DisplayName("DeveRemoverPostExistente")
+-    void removerPostDeveRemoverPostExistente() {
+-        int tamanho = postService.visualizarTodos().size();
+-        boolean resultado = postService.removerPost("p1");
+-        assertTrue(resultado, "A remoção de um post existente deveria retornar true.");
+-        int tamanhoFinal = postService.visualizarTodos().size();
+-        assertEquals(tamanho - 1, tamanhoFinal);
+-
+-        //
+-        //TODO RICHARD
+-        // 4. Garantir que o post "p1" não existe mais na persistência (dataManager).
+-
+-
+-    }
+-
+-    @Test
+-    @DisplayName("removerPostInexistenteDeveRetornarFalso")
+-    void removerPostInexistenteDeveRetornarFalso() {
+-        boolean resultado = postService.removerPost("p999");
+-        assertFalse(resultado);
+-
+-    }
+-
+-    // REQUISITO: Curtir/descurtir posts (Usuário Comum)
+-    @Test
+-    @DisplayName("DeveIncrementarContadorDeCurtidas")
+-    void curtirPostDeveIncrementarContadorDeCurtidas() {
+-        // TODO RICHARD
+-        //  Testar a função de curtir post (ex: "p2"):
+-        // 1. Obter o número de curtidas iniciais do post.
+-
+-
+-        // 2. Chamar curtirPost("p2") e verificar se retorna 'true'.
+-
+-
+-        // 3. Verificar se o contador de curtidas do post na persistência (dataManager) aumentou em 1.
+-
+-    }
+-
+-    // REQUISITO: Filtrar artigos por temas/tags (Usuário Comum)
+-    @Test
+-    @DisplayName("DeveRetornarPostsComTagCorrespondente")
+-    void filtrarPorTagDeveRetornarPostsComTagCorrespondente() {
+-        List<Post> postsFiltrados = postService.filtrarPorTag("Java");
+-        assertEquals(1, postsFiltrados.size());
+-        assertEquals("p1", postsFiltrados.getFirst().getId());
+-
+-    }
+-
+-    @Test
+-    @DisplayName("DeveIgnorarCaseSensitivity")
+-    void filtrarPorTagDeveIgnorarCaseSensitivity() {
+-        List<Post> postsFiltrados = postService.filtrarPorTag("java");
+-        assertEquals(1, postsFiltrados.size());
+-        assertEquals("p1", postsFiltrados.getFirst().getId());
+-
+-    }
+-
+-    @Test
+-    @DisplayName("DeveRetornarListaVazia")
+-    void filtrarPorTagInexistenteDeveRetornarListaVazia() {
+-        List<Post> postsFiltrados = postService.filtrarPorTag("python");
+-        assertTrue(postsFiltrados.isEmpty());
+-
+-    }
+-
+-    // REQUISITO: Visualizar métricas de engajamento (Administrador)
+-    @Test
+-    @DisplayName("DeveRetornarSomaCorreta")
+-    void getCurtidasTotaisDeveRetornarSomaCorreta() {
+-        int curtidas = postService.getCurtidasTotais();
+-        assertEquals(2, curtidas);
+-        postService.curtirPost("p2");
+-        int curtidasNovas = postService.getCurtidasTotais();
+-        assertEquals(3, curtidasNovas);
+-
+-    }
+-}
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"07fda017-3303-4916-ad75-d76d9846662c\" name=\"Changes\" comment=\"\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <favorite-branches>\r\n      <branch-storage>\r\n        <map>\r\n          <entry type=\"LOCAL\">\r\n            <value>\r\n              <list>\r\n                <branch-info repo=\"$PROJECT_DIR$\" source=\"matheus\" />\r\n              </list>\r\n            </value>\r\n          </entry>\r\n        </map>\r\n      </branch-storage>\r\n    </favorite-branches>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;devkuroneko&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">{\r\n  &quot;selectedUrlAndAccountId&quot;: {\r\n    &quot;url&quot;: &quot;https://github.com/grazibit/rp2.git&quot;,\r\n    &quot;accountId&quot;: &quot;8c0decf4-326c-46ac-8c82-694b52bc4292&quot;\r\n  }\r\n}</component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 6\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"34HtTMwJm9wnPraLOTbkdEWDzuK\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"Application.MainApp.executor\": \"Run\",\r\n    \"JUnit.PostServiceTest.executor\": \"Run\",\r\n    \"JUnit.PostServiceTest.removerPostInexistenteDeveRetornarFalso.executor\": \"Run\",\r\n    \"JUnit.PostServiceTest.visualizarTodosDeveRetornarTodosOsPostsIniciais.executor\": \"Run\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252\": \"true\",\r\n    \"RunOnceActivity.git.unshallow\": \"true\",\r\n    \"deletionFromPopupRequiresConfirmation\": \"false\",\r\n    \"git-widget-placeholder\": \"matheus\",\r\n    \"kotlin-language-version-configured\": \"true\",\r\n    \"node.js.detected.package.eslint\": \"true\",\r\n    \"node.js.detected.package.tslint\": \"true\",\r\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\r\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\r\n    \"nodejs_package_manager_path\": \"npm\",\r\n    \"settings.editor.selected.configurable\": \"vcs.Git\",\r\n    \"vue.rearranger.settings.migration\": \"true\"\r\n  }\r\n}]]></component>\r\n  <component name=\"RunManager\">\r\n    <configuration default=\"true\" type=\"JetRunConfigurationType\">\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration default=\"true\" type=\"KotlinStandaloneScriptRunConfigurationType\">\r\n      <option name=\"filePath\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26830.84\" />\r\n        <option value=\"bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-IU-252.26830.84\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"07fda017-3303-4916-ad75-d76d9846662c\" name=\"Changes\" comment=\"\" />\r\n      <created>1760882332511</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1760882332511</updated>\r\n      <workItem from=\"1760882334677\" duration=\"2182000\" />\r\n      <workItem from=\"1760921960036\" duration=\"2124000\" />\r\n      <workItem from=\"1760924947110\" duration=\"39000\" />\r\n      <workItem from=\"1760966936807\" duration=\"1662000\" />\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 6ceb9fb3f2954b95b60583ae5c7d60e793fc4fe4)
++++ b/.idea/workspace.xml	(date 1763384517074)
+@@ -5,12 +5,21 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="07fda017-3303-4916-ad75-d76d9846662c" name="Changes" comment="">
++      <change afterPath="$PROJECT_DIR$/src/test/java/LoginETeste23.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+     <option name="LAST_RESOLUTION" value="IGNORE" />
++  </component>
++  <component name="FileTemplateManagerImpl">
++    <option name="RECENT_TEMPLATES">
++      <list>
++        <option value="SimpleSourceFile" />
++      </list>
++    </option>
+   </component>
+   <component name="Git.Settings">
+     <favorite-branches>
+@@ -34,12 +43,12 @@
+     &quot;assignee&quot;: &quot;devkuroneko&quot;
+   }
+ }</component>
+-  <component name="GithubPullRequestsUISettings">{
+-  &quot;selectedUrlAndAccountId&quot;: {
+-    &quot;url&quot;: &quot;https://github.com/grazibit/rp2.git&quot;,
+-    &quot;accountId&quot;: &quot;8c0decf4-326c-46ac-8c82-694b52bc4292&quot;
+-  }
+-}</component>
++  <component name="GithubPullRequestsUISettings"><![CDATA[{
++  "selectedUrlAndAccountId": {
++    "url": "https://github.com/grazibit/rp2.git",
++    "accountId": "66f9eabc-86d2-456e-b2ef-563d0b0441c4"
++  }
++}]]></component>
+   <component name="ProjectColorInfo">{
+   &quot;associatedIndex&quot;: 6
+ }</component>
+@@ -51,6 +60,7 @@
+   <component name="PropertiesComponent"><![CDATA[{
+   "keyToString": {
+     "Application.MainApp.executor": "Run",
++    "JUnit.LoginETeste23.executor": "Run",
+     "JUnit.PostServiceTest.executor": "Run",
+     "JUnit.PostServiceTest.removerPostInexistenteDeveRetornarFalso.executor": "Run",
+     "JUnit.PostServiceTest.visualizarTodosDeveRetornarTodosOsPostsIniciais.executor": "Run",
+@@ -58,7 +68,8 @@
+     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+     "RunOnceActivity.git.unshallow": "true",
+     "deletionFromPopupRequiresConfirmation": "false",
+-    "git-widget-placeholder": "matheus",
++    "git-widget-placeholder": "master",
++    "ignore.virus.scanning.warn.message": "true",
+     "kotlin-language-version-configured": "true",
+     "node.js.detected.package.eslint": "true",
+     "node.js.detected.package.tslint": "true",
+@@ -70,15 +81,20 @@
+   }
+ }]]></component>
+   <component name="RunManager">
+-    <configuration default="true" type="JetRunConfigurationType">
++    <configuration name="LoginETeste23" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
++      <module name="CodefolioLite" />
++      <option name="PACKAGE_NAME" value="" />
++      <option name="MAIN_CLASS_NAME" value="LoginETeste23" />
++      <option name="TEST_OBJECT" value="class" />
+       <method v="2">
+         <option name="Make" enabled="true" />
+       </method>
+     </configuration>
+-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+-      <option name="filePath" />
+-      <method v="2" />
+-    </configuration>
++    <recent_temporary>
++      <list>
++        <item itemvalue="JUnit.LoginETeste23" />
++      </list>
++    </recent_temporary>
+   </component>
+   <component name="SharedIndexes">
+     <attachedChunks>
+@@ -99,6 +115,7 @@
+       <workItem from="1760921960036" duration="2124000" />
+       <workItem from="1760924947110" duration="39000" />
+       <workItem from="1760966936807" duration="1662000" />
++      <workItem from="1763384185808" duration="304000" />
+     </task>
+     <servers />
+   </component>
+Index: src/test/java/LoginETeste23.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/java/LoginETeste23.java b/src/test/java/LoginETeste23.java
+new file mode 100644
+--- /dev/null	(date 1763384239070)
++++ b/src/test/java/LoginETeste23.java	(date 1763384239070)
+@@ -0,0 +1,178 @@
++import org.junit.jupiter.api.AfterEach;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++import org.openqa.selenium.By;
++import org.openqa.selenium.WebDriver;
++import org.openqa.selenium.WebElement;
++import org.openqa.selenium.chrome.ChromeDriver;
++import org.openqa.selenium.support.ui.ExpectedConditions;
++import org.openqa.selenium.support.ui.WebDriverWait;
++import org.openqa.selenium.JavascriptExecutor;
++import io.github.bonigarcia.wdm.WebDriverManager;
++import java.time.Duration;
++
++import static org.junit.jupiter.api.Assertions.assertTrue;
++
++public class LoginETeste23 {
++
++    private WebDriver driver;
++    private WebDriverWait wait;
++    private final Duration TIMEOUT = Duration.ofSeconds(15);
++    private final String URL_BASE = "https://testes.codefolio.com.br/";
++    private JavascriptExecutor js;
++
++    // Token atualizado conforme fornecido
++    private final String FIREBASE_KEY = "firebase:authUser:AIzaSyARn2qVrSSndFu9JSo5mexrQCMxmORZzCg:[DEFAULT]";
++    private final String FIREBASE_VALUE = "{\"apiKey\":\"AIzaSyARn2qVrSSndFu9JSo5mexrQCMxmORZzCg\",\"appName\":\"[DEFAULT]\",\"createdAt\":\"1762135293795\",\"displayName\":\"Richard Lopes do Amaral\",\"email\":\"richardamaral.aluno@unipampa.edu.br\",\"emailVerified\":true,\"isAnonymous\":false,\"lastLoginAt\":\"1763363009521\",\"phoneNumber\":null,\"photoURL\":\"https://lh3.googleusercontent.com/a/ACg8ocKAXty-y5Uv6Bu5KmJ0FYuH7b9InieOMwH61AHfmtFAsElhwG4H=s96-c\",\"providerData\":[{\"providerId\":\"google.com\",\"uid\":\"114097117142889543538\",\"displayName\":\"Richard Lopes do Amaral\",\"email\":\"richardamaral.aluno@unipampa.edu.br\",\"phoneNumber\":null,\"photoURL\":\"https://lh3.googleusercontent.com/a/ACg8ocKAXty-y5Uv6Bu5KMj0FYuH7b9InieOMwH61AHfmtFAsElhWG4H=s96-c\",\"isPrimaryMember\":true,\"federatedId\":\"114097117142889543538\",\"rawId\":\"114097117142889543538\",\"screenName\":null}],\"stsTokenManager\":{\"accessToken\":\"eyJhbGciOiJSUzI1NiIsImtpZCI6IjQ1YTZjMGMyYjgwMDcxN2EzNGQ1Y2JiYmYzOWI4NGI2NzYxMjgyNjUiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiUmljaGFyZCBMb3BlcyBkbyBBbWFyYWwiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jS0FYdHkteTVVdjZCdTVLbUowRll1SDdiOUluaWVPTXdINjFBSGZtdEZBc0VsaHdHNEg9czk2LWMiLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vcmVhY3QtbmEtcHJhdGljYSIsImF1ZCI6InJlYWN0LW5hLXByYXRpY2EiLCJhdXRoX3RpbWUiOjE3NjIxOTA5MjgsInVzZXJfaWQiOiJuRHh4Z1puSHVmZ2hkQzVGR0JUeTZlNjIxYnMxIiwic3ViIjoibkR4eGdabkh1ZmdoZEM1RkdCVHk2ZTYyMWJzMSIsImlhdCI6MTc2MzM4MDkwNywiZXhwIjoxNzYzMzg0NTA3LCJlbWFpbCI6InJpY2hhcmRhbWFyYWwuYWx1bm9AdW5pcGFtcGEuZWR1LmJyIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZ29vZ2xlLmNvbSI6WyIxMTQwOTcxMTcxNDI4ODk1NDM1MzgiXSwiZW1haWwiOlsicmljaGFyZGFtYXJhbC5hbHVub0B1bmlwYW1wYS5lZHUuYnIiXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.BELsi0DuA1e6neJImmQ_kd1tmOuq-aG0ebvtJpKl0Bi2FScdPmkZ4OUHoLHLQTzRazx9MqEt_pY8ohIuc3ZA5Wp3pknyvwR0AEx-Vjmnm0DkXhLAaxZcfptaIsvChGdpzvPXeWAJe-Pv9jr3VcpOgEItJU924wYGKdUoz6SoRISV8iRHg_Rh4qYiGe0aHBMlgpxZeQrEdakNPwaTxPynK2Yo8D0tZj281XBuvPi2GWdMhNVoWYWKR-4Pm0wWAaPsvvVqekGaOPXrhuxQSyV_mcg9Yix356z0tFZfPyV3hjva_qJobVpBmsuaJrAcINSC7dGtx_vUN9TywBkBtfUnBw\",\"expirationTime\":1763384503787,\"refreshToken\":\"AMf-vByB7rxEQtw49WU8msQD7U8hmW4ZcF2ld3wcxbVM8rFXQXIxAEeeiL99x9Jq2AD6LqhF5e3UEfdklZny1pO3JcAJAxd0hUPkrVI5JKqpJEbljNAsIwVqxQZcpxP_M3xJYeGgxVBcWZrc2y8fEyZmMxIa-qUY1d2DTPlUFMR9xBWXZHTjwvloSP1d8uo4xpbRSa15gKHJMTd8R_OG10DG7bY8rQb22ZxaAtsmG1KKz0VQvKWMJwC5rZ7qscs3raXdtpHsVPnSAh1BVNhwSN4pqTj-o2gyRS1KI691VrDTEIhKQZVHm933DTrIIzGhJs-H2lt3OEgjbH2_YV-2dKo0CK8XSbX6gxdmG19pvfk-e28iXlGChB7lNi_LhHTpA7wQa_9ZvLYJEcZ39IFakKrZSlY2U5vDdraLvvG2dk-F7dPWk6_x5kA9cxmlQjrIZkS_F4YbmvbLS0pQSabSj-lhhL8FjiQo-Q\"},\"tenantId\":null,\"uid\":\"nDxxgZnHufghdC5FGBTy6e621bs1\",\"_redirectEventId\":null}";
++
++    @BeforeEach
++    public void setup() {
++        WebDriverManager.chromedriver().setup();
++        driver = new ChromeDriver();
++        driver.manage().window().maximize();
++
++        driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(30));
++        wait = new WebDriverWait(driver, TIMEOUT);
++        js = (JavascriptExecutor) driver;
++
++        driver.get(URL_BASE);
++
++        try {
++            js.executeScript("window.localStorage.setItem(arguments[0], arguments[1]);", FIREBASE_KEY, FIREBASE_VALUE);
++        } catch (Exception e) {
++            throw new RuntimeException("Falha no setup do Local Storage para login", e);
++        }
++        driver.navigate().refresh();
++    }
++
++    @Test
++    public void testRF23EdicaoDeAvaliacao() {
++        navegarParaTelaDeAvaliacoes();
++        editarAvaliacao();
++    }
++
++    // --------------------------------------------------------------------------
++    //                           FUNÇÕES DE NAVEGAÇÃO
++    // --------------------------------------------------------------------------
++
++    private void verificarLoginEAbrirMenu() {
++        WebElement profileButton = wait.until(ExpectedConditions.presenceOfElementLocated(
++                By.cssSelector("button[aria-label='Configurações da Conta']")
++        ));
++        js.executeScript("arguments[0].click();", profileButton);
++
++        wait.until(ExpectedConditions.visibilityOfElementLocated(
++                By.xpath("//li[normalize-space()='Gerenciamento de Cursos']")
++        ));
++    }
++
++    private void clicarGerenciamentoCursos() {
++        try {
++            WebElement gerenciamentoButton = wait.until(ExpectedConditions.elementToBeClickable(
++                    By.xpath("//li[normalize-space()='Gerenciamento de Cursos']")
++            ));
++            gerenciamentoButton.click();
++            wait.until(ExpectedConditions.urlContains("/manage-courses"));
++        } catch (Exception e) {
++            assertTrue(false, "Falha ao clicar em Gerenciamento de Cursos.");
++        }
++    }
++
++    private void navegarParaTelaDeAvaliacoes() {
++        verificarLoginEAbrirMenu();
++        clicarGerenciamentoCursos();
++
++        System.out.println("Acessando o curso através do botão 'Gerenciar Curso'...");
++        try {
++            // --- ALTERAÇÃO 1: XPath Relativo (Mais Robusto) ---
++            // Procura um botão que contenha "Gerenciar" ou "Curso"
++            String xpathBotaoGerenciarCurso = "//button[contains(normalize-space(), 'Gerenciar Curso')]";
++
++            WebElement botaoGerenciarCurso = wait.until(ExpectedConditions.elementToBeClickable(
++                    By.xpath(xpathBotaoGerenciarCurso)
++            ));
++            botaoGerenciarCurso.click();
++
++            wait.until(ExpectedConditions.urlContains("/adm-cursos"));
++            System.out.println("✅ Curso acessado com sucesso.");
++
++            // --- ALTERAÇÃO 2: XPath Relativo para Avaliações ---
++            String xpathAvaliacoes = "//button[normalize-space()='Avaliações' or .//svg[@data-testid='StarIcon']]";
++
++            WebElement avaliacoesButton = wait.until(ExpectedConditions.presenceOfElementLocated(
++                    By.xpath(xpathAvaliacoes)
++            ));
++
++            js.executeScript("arguments[0].scrollIntoView(true);", avaliacoesButton);
++            js.executeScript("arguments[0].click();", avaliacoesButton);
++            System.out.println("Clicou no botão 'Avaliações'.");
++
++            // Espera um elemento da tabela aparecer para confirmar que carregou
++            wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//table")));
++
++            js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
++            System.out.println("✅ Acesso à aba 'Avaliações' concluído.");
++
++        } catch (Exception e) {
++            assertTrue(false, "Falha na navegação até a aba Avaliações. Exceção: " + e.getMessage());
++        }
++    }
++
++    // --------------------------------------------------------------------------
++    //                           RF23 - EDIÇÃO DE AVALIAÇÃO
++    // --------------------------------------------------------------------------
++
++    private void editarAvaliacao() {
++        System.out.println("\n--- RF23: Teste de Edição de Avaliação ---");
++        try {
++            // Localiza a linha pelo ID e navega até o botão na terceira célula
++            String xpathBotaoEditar = "//tr[./td[contains(text(), 'ID-2345')]]/td[3]//button";
++
++            WebElement editarButton = wait.until(ExpectedConditions.presenceOfElementLocated(
++                    By.xpath(xpathBotaoEditar)
++            ));
++
++
++            // Tentativa 2: Clique Forçado (Mais Recomendado se o padrão falhar)
++            JavascriptExecutor js = (JavascriptExecutor) driver;
++            js.executeScript("arguments[0].click();", editarButton);
++
++            js.executeScript("arguments[0].scrollIntoView(true);", editarButton);
++            js.executeScript("arguments[0].click();", editarButton);
++            System.out.println("Clicou em 'Editar'.");
++
++            WebElement notaInput = wait.until(ExpectedConditions.presenceOfElementLocated(
++                    By.xpath("//input[@id='nota' or contains(@name, 'nota') or contains(@placeholder, 'Nota')]")
++            ));
++            notaInput.clear();
++            notaInput.sendKeys("9");
++            System.out.println("Nota alterada para 9.");
++
++            WebElement salvarButton = wait.until(ExpectedConditions.elementToBeClickable(
++                    By.xpath("//button[normalize-space()='Salvar Alterações']")
++            ));
++            salvarButton.click();
++            System.out.println("Submeteu a alteração.");
++
++            // --- ALTERAÇÃO 3: Esperar o modal sumir antes de verificar ---
++            // Isso evita que o teste leia o valor antigo ou falhe antes da atualização
++            wait.until(ExpectedConditions.invisibilityOf(salvarButton));
++
++            WebElement novaNotaNaTabela = wait.until(ExpectedConditions.presenceOfElementLocated(
++                    By.xpath("//td[normalize-space()='9']")
++            ));
++            assertTrue(novaNotaNaTabela.isDisplayed(), "A nova nota (9) não foi exibida. A edição falhou.");
++            System.out.println("✅ RF23 Sucesso: Avaliação editada e nota '9' validada.");
++
++        } catch (Exception e) {
++            assertTrue(false, "Falha no teste de Edição (RF23). Exceção: " + e.getMessage());
++        }
++    }
++
++    @AfterEach
++    public void teardown() {
++        if (driver != null) {
++            // driver.quit();
++        }
++    }
++}
+\ No newline at end of file
